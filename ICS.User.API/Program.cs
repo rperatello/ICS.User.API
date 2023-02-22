@@ -22,23 +22,6 @@ else
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
-
-//builder.Services.AddDbContext<ICSDbContext>(options =>
-//{
-//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-//});
-
-//builder.Services.AddDbContext<ICSDbContext>(options => {
-//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("ICS.User.API"));
-//});
-
-//builder.Services.AddDbContext<ICSDbContext>(options =>
-//{
-//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("ICS.User.Infrastructure"));
-//});
-
-//builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
