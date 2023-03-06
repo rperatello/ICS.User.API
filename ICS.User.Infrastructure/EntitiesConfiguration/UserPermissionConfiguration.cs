@@ -18,6 +18,9 @@ public class UserPermissionConfiguration : IEntityTypeConfiguration<UserPermissi
         builder.Property(up => up.PermissionId).IsRequired();
         builder.Property(up => up.Allowed).HasDefaultValue(false);
 
+        builder.HasOne(up => up.User).WithMany(up => up.UserPermission).HasForeignKey(up => up.UserId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(up => up.Permission).WithMany(up => up.UserPermission).HasForeignKey(up => up.PermissionId).OnDelete(DeleteBehavior.Cascade);
+        
         builder.HasData(
             new UserPermission(1, 1, true),
             new UserPermission(1, 2, true),

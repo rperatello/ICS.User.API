@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ICS.User.Application\ICS.User.Application.csproj" />
     <ProjectReference Include="..\ICS.User.Infrastructure\ICS.User.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -11,6 +11,8 @@ public sealed class Permission : Entity
     public string? Name { get; set; }
     public ICollection<UserPermission> UserPermission { get; set; } = null!;
 
+    public Permission() { }
+
     public Permission(string? name)
     {
         Name = name;

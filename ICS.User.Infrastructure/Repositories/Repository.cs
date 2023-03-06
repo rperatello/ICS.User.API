@@ -14,28 +14,28 @@ public class Repository<T> : IRepository<T> where T : class
         _context = context;
     }
 
-    public IQueryable<T> GetAll()
+    public virtual IQueryable<T> GetAll()
     {
-        return _context.Set<T>().AsNoTracking();
+        return _context.Set<T>().AsNoTracking();        
     }
 
-    public async Task<T?> GetById(Expression<Func<T, bool>> predicate)
+    public virtual async Task<T?> Where(Expression<Func<T, bool>> predicate)
     {
         return await _context.Set<T>().AsNoTracking().SingleOrDefaultAsync(predicate);
     }
 
-    public void Add(T entity)
+    public virtual void Add(T entity)
     {
         _context.Set<T>().Add(entity);
     }
 
-    public void Update(T entity)
+    public virtual void Update(T entity)
     {
         _context.Entry(entity).State = EntityState.Modified;
         _context.Set<T>().Update(entity);
     }
 
-    public void Delete(T entity)
+    public virtual void Delete(T entity)
     {
         _context.Set<T>().Remove(entity);
     }    

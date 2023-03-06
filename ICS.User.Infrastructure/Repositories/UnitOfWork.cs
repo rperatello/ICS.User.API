@@ -48,14 +48,27 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    public void Commit()
+    public async Task Commit()
     {
-        _context.SaveChanges();
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            string error = ex.InnerException == null ? $"Message: {ex.Message}" : $"Message: {ex.Message} | InnerException: {ex.InnerException.Message.Split("\r\n")[0]}";
+            throw new Exception(error);
+        }
     }
 
     public void Dispose()
     {
         _context.Dispose();
+    }
+
+    public bool HasDatabaseConnection()
+    {
+        return _context.Database.CanConnect();
     }
 
 }

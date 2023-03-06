@@ -5,7 +5,7 @@ namespace ICS.User.Domain.Enumerators;
 public enum Role
 {
     [Description("Administrator")]
-    Admin,
+    ADMIN,
     [Description("User")]
-    User
+    USER
 }

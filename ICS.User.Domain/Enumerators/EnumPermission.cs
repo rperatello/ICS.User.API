@@ -4,8 +4,6 @@ namespace ICS.User.Domain.Enumerators;
 
 public enum EnumPermission
 {
-    [Description("FullAccess")]
-    FullAccess,
     [Description("Create")]
     Create,
     [Description("Delete")]

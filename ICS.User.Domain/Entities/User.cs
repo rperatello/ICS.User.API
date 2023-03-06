@@ -1,4 +1,5 @@
 ﻿using ICS.User.Domain.Enumerators;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ICS.User.Domain.Entities;
 
@@ -10,7 +11,14 @@ public sealed class User : Entity
     public Role Role { get; set; }
     public string? Password { get; set; }
     public bool isBlocked { get; set; }
+
+    [NotMapped]
+    public List<int>? PermissionsIdList { get; set; }
+
     public ICollection<UserPermission> UserPermission { get; set; } = null!;
+
+
+    public User() { }
 
     public User(int id, string? name, string? login, string? email, Role role, string? password, bool isBlocked)
     {

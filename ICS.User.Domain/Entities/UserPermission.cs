@@ -1,6 +1,6 @@
 ﻿namespace ICS.User.Domain.Entities;
 
-public sealed class UserPermission
+public sealed class UserPermission : Entity
 {
     public int UserId { get; set; }
     public int PermissionId { get; set; }

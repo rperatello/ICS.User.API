@@ -11,5 +11,5 @@ public class UserPermissionRepository : Repository<UserPermission>, IUserPermiss
     public UserPermissionRepository(ICSDbContext userPermissionContext) : base(userPermissionContext)
     {
         _userPermissionContext = userPermissionContext;
-    }
+    }    
 }

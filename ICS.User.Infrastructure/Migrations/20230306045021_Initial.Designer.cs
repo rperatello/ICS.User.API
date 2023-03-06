@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ICS.User.Infrastructure.Migrations
 {
     [DbContext(typeof(ICSDbContext))]
-    [Migration("20230222070111_Initial")]
+    [Migration("20230306045021_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -153,6 +153,9 @@ namespace ICS.User.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
                     b.HasKey("UserId", "PermissionId");
 
                     b.HasIndex("PermissionId");
@@ -164,25 +167,29 @@ namespace ICS.User.Infrastructure.Migrations
                         {
                             UserId = 1,
                             PermissionId = 1,
-                            Allowed = true
+                            Allowed = true,
+                            Id = 0
                         },
                         new
                         {
                             UserId = 1,
                             PermissionId = 2,
-                            Allowed = true
+                            Allowed = true,
+                            Id = 0
                         },
                         new
                         {
                             UserId = 1,
                             PermissionId = 3,
-                            Allowed = true
+                            Allowed = true,
+                            Id = 0
                         },
                         new
                         {
                             UserId = 1,
                             PermissionId = 4,
-                            Allowed = true
+                            Allowed = true,
+                            Id = 0
                         });
                 });
 

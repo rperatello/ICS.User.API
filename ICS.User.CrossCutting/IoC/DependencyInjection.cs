@@ -1,4 +1,6 @@
-﻿using ICS.User.Domain.Interfaces;
+﻿using AutoMapper;
+using ICS.User.Application.DTOs.Mapping;
+using ICS.User.Domain.Interfaces;
 using ICS.User.Infrastructure.Context;
 using ICS.User.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +20,16 @@ public static class DependencyInjection
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        var mappingConfig = new MapperConfiguration(mc =>
+        {
+            mc.AllowNullCollections = true;
+            mc.AddProfile(new MappingProfile());
+        });
+
+        IMapper mapper = mappingConfig.CreateMapper();
+        services.AddSingleton(mapper);
+
         return services;
     }
+
 }

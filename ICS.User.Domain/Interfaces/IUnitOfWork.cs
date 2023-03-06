@@ -6,5 +6,6 @@ public interface IUnitOfWork
     IUserRepository UserRepository { get; }
     IPermissionRepository PermissionRepository { get; }
     IUserPermissionRepository UserPermissionRepository { get; }
-    void Commit();
+    Task Commit();
+    bool HasDatabaseConnection();
 }

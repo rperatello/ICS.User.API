@@ -65,7 +65,8 @@ namespace ICS.User.Infrastructure.Migrations
                 {
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     PermissionId = table.Column<int>(type: "integer", nullable: false),
-                    Allowed = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
+                    Allowed = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -102,13 +103,13 @@ namespace ICS.User.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "UserPermissions",
-                columns: new[] { "PermissionId", "UserId", "Allowed" },
+                columns: new[] { "PermissionId", "UserId", "Allowed", "Id" },
                 values: new object[,]
                 {
-                    { 1, 1, true },
-                    { 2, 1, true },
-                    { 3, 1, true },
-                    { 4, 1, true }
+                    { 1, 1, true, 0 },
+                    { 2, 1, true, 0 },
+                    { 3, 1, true, 0 },
+                    { 4, 1, true, 0 }
                 });
 
             migrationBuilder.CreateIndex(
