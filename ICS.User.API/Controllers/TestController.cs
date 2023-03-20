@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ICS.User.Application.DTOs;
 using ICS.User.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,7 +38,9 @@ public class TestController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.Message);
+            string error = ex.InnerException == null ? $"Message: {ex.Message}" : $"Message: {ex.Message} | InnerException: {ex.InnerException?.Message}";
+            _logger.LogError(error);
+            return StatusCode(500, ErrorsResponseDTO.InformError(error));
         }
     }
 }

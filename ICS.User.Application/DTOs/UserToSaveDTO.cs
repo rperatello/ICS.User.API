@@ -1,33 +1,50 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace ICS.User.Application.DTOs;
 
 public class UserToSaveDTO
 {
-    public int Id { get; set; }
+    [Required]
+    [Range(0, uint.MaxValue)]
+    public uint Id { get; set; }
 
-    [MinLength(2)]
+    [MinLength(2, ErrorMessage = "Name must contain at least 2 characters")]
     [MaxLength(300)]
     [Required(ErrorMessage = "Name is required")]
     public string? Name { get; set; }
 
-    [MinLength(2)]
+    private string? _login { get; set; }
+
+    [MinLength(2, ErrorMessage = "Login must contain at least 2 characters")]
     [MaxLength(320)]
     [Required(ErrorMessage = "Login is required")]
-    public string? Login { get; set; }
+    public string? Login
+    {
+        get { return _login; }
+        set
+        {
+            _login = value?.ToLower().Trim();
+        }
+    }
+
+    private string? _email { get; set; }
 
     [MinLength(6)]
     [MaxLength(320)]
     [EmailAddress]
     [Required(ErrorMessage = "Email is required")]
-    public string? Email { get; set; }
+    public string? Email
+    {
+        get { return _email; }
+        set
+        {
+            _email = value?.ToLower().Trim();
+        }
+    }
 
-    [MinLength(6)]
-    [Required(ErrorMessage = "Password is required")]
     public string? Password { get; set; }
 
-    public int? Role { get; set; }
+    public int? Role { get; set; } = 1;
 
-    public List<int>? PermissionsIdList { get; set; }
+    public List<uint>? PermissionsIdList { get; set; }
 }

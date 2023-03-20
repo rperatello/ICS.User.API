@@ -18,7 +18,7 @@ public sealed class Permission : Entity
         Name = name;
     }
 
-    public Permission(int id, string? name)
+    public Permission(uint id, string? name)
     {
         Id = id;
         Name = name;

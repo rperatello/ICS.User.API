@@ -17,7 +17,7 @@ namespace ICS.User.Infrastructure.Migrations
                 name: "Contacts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     Email = table.Column<string>(type: "character varying(320)", maxLength: 320, nullable: false),
@@ -32,7 +32,7 @@ namespace ICS.User.Infrastructure.Migrations
                 name: "Permissions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false)
                 },
@@ -45,7 +45,7 @@ namespace ICS.User.Infrastructure.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     Login = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -63,10 +63,9 @@ namespace ICS.User.Infrastructure.Migrations
                 name: "UserPermissions",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    PermissionId = table.Column<int>(type: "integer", nullable: false),
-                    Allowed = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    PermissionId = table.Column<long>(type: "bigint", nullable: false),
+                    Allowed = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -90,32 +89,44 @@ namespace ICS.User.Infrastructure.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "create" },
-                    { 2, "delete" },
-                    { 3, "edit" },
-                    { 4, "read" }
+                    { 1L, "read" },
+                    { 2L, "create" },
+                    { 3L, "edit" },
+                    { 4L, "delete" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "Login", "Name", "Password", "Role", "isBlocked" },
-                values: new object[] { 1, "admin@ics.com", "admin", "Admin", "21232f297a57a5a743894a0e4a801fc3", 0, false });
+                values: new object[] { 1L, "admin@ics.com", "admin", "Admin", "21232f297a57a5a743894a0e4a801fc3", 0, false });
 
             migrationBuilder.InsertData(
                 table: "UserPermissions",
-                columns: new[] { "PermissionId", "UserId", "Allowed", "Id" },
+                columns: new[] { "PermissionId", "UserId", "Allowed" },
                 values: new object[,]
                 {
-                    { 1, 1, true, 0 },
-                    { 2, 1, true, 0 },
-                    { 3, 1, true, 0 },
-                    { 4, 1, true, 0 }
+                    { 1L, 1L, true },
+                    { 2L, 1L, true },
+                    { 3L, 1L, true },
+                    { 4L, 1L, true }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Permissions_Name",
+                table: "Permissions",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserPermissions_PermissionId",
                 table: "UserPermissions",
                 column: "PermissionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Login",
+                table: "Users",
+                column: "Login",
+                unique: true);
         }
 
         /// <inheritdoc />

@@ -14,8 +14,8 @@ public class UserPermissionConfiguration : IEntityTypeConfiguration<UserPermissi
     public void Configure(EntityTypeBuilder<UserPermission> builder)
     {
         builder.HasKey(up => new { up.UserId, up.PermissionId });
-        builder.Property(up => up.UserId).IsRequired();
-        builder.Property(up => up.PermissionId).IsRequired();
+        builder.Property(up => up.UserId).HasColumnType("bigint").IsRequired();
+        builder.Property(up => up.PermissionId).HasColumnType("bigint").IsRequired();
         builder.Property(up => up.Allowed).HasDefaultValue(false);
 
         builder.HasOne(up => up.User).WithMany(up => up.UserPermission).HasForeignKey(up => up.UserId).OnDelete(DeleteBehavior.Cascade);

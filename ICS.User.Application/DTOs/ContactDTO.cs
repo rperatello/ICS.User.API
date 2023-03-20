@@ -5,7 +5,9 @@ namespace ICS.User.Application.DTOs;
 
 public class ContactDTO
 {
-    public int Id { get; set; }
+    [Required]
+    [Range(0, uint.MaxValue)]
+    public uint Id { get; set; }
 
     [MinLength(2)]
     [MaxLength(300)]

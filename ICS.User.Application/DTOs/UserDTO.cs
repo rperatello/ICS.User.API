@@ -12,6 +12,8 @@ namespace ICS.User.Application.DTOs;
 public class UserDTO
 {
     [DataMember(Order = 1)]
+    [Required]
+    [Range(0, uint.MaxValue)]
     public int Id { get; set; }
 
     [DataMember(Order = 2)]

@@ -14,8 +14,10 @@ public class Repository<T> : IRepository<T> where T : class
         _context = context;
     }
 
-    public virtual IQueryable<T> GetAll()
+    public virtual IQueryable<T> GetAll(bool withTracking = false)
     {
+        if (withTracking)
+            return _context.Set<T>();
         return _context.Set<T>().AsNoTracking();        
     }
 

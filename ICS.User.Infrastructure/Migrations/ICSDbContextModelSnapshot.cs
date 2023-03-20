@@ -23,11 +23,11 @@ namespace ICS.User.Infrastructure.Migrations
 
             modelBuilder.Entity("ICS.User.Domain.Entities.Contact", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Birthday")
                         .HasMaxLength(10)
@@ -50,11 +50,11 @@ namespace ICS.User.Infrastructure.Migrations
 
             modelBuilder.Entity("ICS.User.Domain.Entities.Permission", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -71,33 +71,33 @@ namespace ICS.User.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 1L,
+                            Name = "read"
+                        },
+                        new
+                        {
+                            Id = 2L,
                             Name = "create"
                         },
                         new
                         {
-                            Id = 2,
-                            Name = "delete"
-                        },
-                        new
-                        {
-                            Id = 3,
+                            Id = 3L,
                             Name = "edit"
                         },
                         new
                         {
-                            Id = 4,
-                            Name = "read"
+                            Id = 4L,
+                            Name = "delete"
                         });
                 });
 
             modelBuilder.Entity("ICS.User.Domain.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -125,12 +125,15 @@ namespace ICS.User.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Login")
+                        .IsUnique();
+
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 1L,
                             Email = "admin@ics.com",
                             Login = "admin",
                             Name = "Admin",
@@ -142,19 +145,16 @@ namespace ICS.User.Infrastructure.Migrations
 
             modelBuilder.Entity("ICS.User.Domain.Entities.UserPermission", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("integer");
+                    b.Property<long>("PermissionId")
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("Allowed")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
-
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
 
                     b.HasKey("UserId", "PermissionId");
 
@@ -165,31 +165,27 @@ namespace ICS.User.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = 1,
-                            PermissionId = 1,
-                            Allowed = true,
-                            Id = 0
+                            UserId = 1L,
+                            PermissionId = 1L,
+                            Allowed = true
                         },
                         new
                         {
-                            UserId = 1,
-                            PermissionId = 2,
-                            Allowed = true,
-                            Id = 0
+                            UserId = 1L,
+                            PermissionId = 2L,
+                            Allowed = true
                         },
                         new
                         {
-                            UserId = 1,
-                            PermissionId = 3,
-                            Allowed = true,
-                            Id = 0
+                            UserId = 1L,
+                            PermissionId = 3L,
+                            Allowed = true
                         },
                         new
                         {
-                            UserId = 1,
-                            PermissionId = 4,
-                            Allowed = true,
-                            Id = 0
+                            UserId = 1L,
+                            PermissionId = 4L,
+                            Allowed = true
                         });
                 });
 
