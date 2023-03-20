@@ -8,7 +8,7 @@ public sealed class User : Entity
     public string? Name { get; set; }
     public string? Login { get; set; }
     public string? Email { get; set; }
-    public Role Role { get; set; }
+    public Role Role { get; set; } = Role.USER;
     public string? Password { get; set; }
     public bool isBlocked { get; set; }
 

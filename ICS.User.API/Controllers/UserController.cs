@@ -2,11 +2,17 @@
 using ICS.User.Application.DTOs;
 using ICS.User.Application.Utils;
 using ICS.User.Domain.Entities;
+using ICS.User.Domain.Enumerators;
 using ICS.User.Domain.Interfaces;
+using ICS.User.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System.Linq;
+using System.Text;
 
 namespace ICS.User.API.Controllers;
 
@@ -23,8 +29,54 @@ public class UserController : ControllerBase
         _logger = logger;
         _uof = uof;
         _mapper = mapper;
-    }    
+    }
 
+    [AllowAnonymous]
+    [HttpPost("login")]
+    public async Task<ActionResult<dynamic>> Authenticate([FromBody] UserLoginDTO user)
+    {
+        StringBuilder logTxt = new StringBuilder("Login - Token Request\n");
+
+        try
+        {
+            user.IP = "127.0.0.1";
+            if (Request.Headers.ContainsKey("ClientIP"))
+            {
+                user.IP = Request.Headers["ClientIP"];
+            }
+
+            logTxt.AppendLine($"Request by: {user.Login} | IP: {user.IP}");
+
+            var userSaved = _uof.UserRepository.GetAll()
+                                .Include(up => up.UserPermission)
+                                .ThenInclude(p => p.Permission)
+                                .FirstOrDefaultAsync(u => u.Login == user.Login && u.Password == ConverterTool.ExtractDataFromBase64(user.Password))
+                                .Result;
+
+            if (userSaved is null) {
+                logTxt.Append("Login or password invalid");
+                _logger.LogWarning(logTxt.ToString());
+                return BadRequest(ErrorsResponseDTO.InformError("Login or password invalid")); 
+            }
+
+            userSaved.PermissionsIdList = userSaved.UserPermission.Select(p => p.PermissionId).ToList();
+            var token = TokenSystemTools.GenerateToken(userSaved);
+
+            logTxt.Append("Token generated");
+            _logger.LogInformation(logTxt.ToString());
+
+            return Ok(new { token });
+
+        }
+        catch (Exception ex)
+        {
+            string error = ex.InnerException == null ? $"Message: {ex.Message}" : $"Message: {ex.Message} | InnerException: {ex.InnerException?.Message}";
+            _logger.LogError(error);
+            return StatusCode(500, ErrorsResponseDTO.InformError(error));
+        }
+    }
+
+    [Authorize]
     [EnableQuery]
     [HttpGet("users", Name = "GetUsers")]
     public async Task<IActionResult> GetUsers()
@@ -42,6 +94,7 @@ public class UserController : ControllerBase
         }
     }
 
+    [Authorize]
     [EnableQuery]
     [HttpGet("{id}", Name = "GetUserById")]
     public async Task<IActionResult> GetUserById(int id)
@@ -59,7 +112,7 @@ public class UserController : ControllerBase
         }
     }
 
-
+    [Authorize]
     [HttpPost("", Name = "AddUser")]
     public async Task<IActionResult> AddUser([FromBody] UserToSaveDTO userDTO)
     {
@@ -110,6 +163,7 @@ public class UserController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("{id}", Name = "UpdateUser")]
     public async Task<IActionResult> UpdateUser(uint id, [FromBody] UserToSaveDTO userDTO)
     {
@@ -185,6 +239,7 @@ public class UserController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "0")]
     [HttpDelete("{id}", Name = "DeleteUser")]
     public async Task<IActionResult> DeleteUser(uint id)
     {

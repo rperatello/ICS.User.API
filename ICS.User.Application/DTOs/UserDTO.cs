@@ -38,9 +38,6 @@ public class UserDTO
     [DataMember(Order = 5)]
     public string? Role { get; set; }
 
-    [DataMember(Order = 6)]
-    //public List<int>? PermissionsIdList { get; set; }
-
     public ICollection<UserPermissionDTO> Permissions { get; set; }
 
 }
